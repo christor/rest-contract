@@ -3,7 +3,7 @@
 
     <groupId>org.christor</groupId>
     <artifactId>rest-contract</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 
     <name>rest-contract</name>
