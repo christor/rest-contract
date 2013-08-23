@@ -1,4 +1,4 @@
-package org.crued.restcontract.client;
+package org.christor.restcontract.client;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
@@ -10,13 +10,13 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import java.net.MalformedURLException;
 import javax.ws.rs.core.MultivaluedMap;
-import org.crued.restcontract.BodyMatcher;
-import org.crued.restcontract.Contract;
-import org.crued.restcontract.HeaderMatcher;
-import org.crued.restcontract.Request;
-import org.crued.restcontract.Response;
-import org.crued.restcontract.RestContractViolationException;
-import org.crued.restcontract.Rule;
+import org.christor.restcontract.BodyMatcher;
+import org.christor.restcontract.Contract;
+import org.christor.restcontract.HeaderMatcher;
+import org.christor.restcontract.Request;
+import org.christor.restcontract.Response;
+import org.christor.restcontract.RestContractViolationException;
+import org.christor.restcontract.Rule;
 
 public class ContractClient {
 

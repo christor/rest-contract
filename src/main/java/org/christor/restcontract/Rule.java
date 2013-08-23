@@ -1,8 +1,8 @@
-package org.crued.restcontract;
+package org.christor.restcontract;
 
 import lombok.Data;
-import org.crued.restcontract.Request.RequestBuilder;
-import org.crued.restcontract.Response.ResponseBuilder;
+import org.christor.restcontract.Request.RequestBuilder;
+import org.christor.restcontract.Response.ResponseBuilder;
 
 @Data
 public class Rule {

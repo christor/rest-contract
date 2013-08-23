@@ -1,4 +1,4 @@
-package org.crued.restcontract.server;
+package org.christor.restcontract.server;
 
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.spi.container.ContainerRequest;
@@ -12,9 +12,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import org.crued.restcontract.Contract;
-import org.crued.restcontract.HeaderMatcher;
-import org.crued.restcontract.Rule;
+import org.christor.restcontract.Contract;
+import org.christor.restcontract.HeaderMatcher;
+import org.christor.restcontract.Rule;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 @Path("/")
@@ -76,12 +76,12 @@ public class ContractServer {
                 }
             }
 
-            final org.crued.restcontract.Request targetRequest = rule.getRequest();
+            final org.christor.restcontract.Request targetRequest = rule.getRequest();
             if (targetRequest.getMethod().matches(method)) {
                 if (targetRequest.getPath().matches(path)) {
                     if (targetRequest.getHeaders().matches(headers.getRequestHeaders())) {
                         if (targetRequest.getBody().matches(body)) {
-                            org.crued.restcontract.Response response = rule.getResponse();
+                            org.christor.restcontract.Response response = rule.getResponse();
                             Response.ResponseBuilder builder = Response.status(response.getStatus().getValue());
                             for (HeaderMatcher m : response.getHeaders()) {
                                 builder.header(m.getKey(), m.getValue());

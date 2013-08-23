@@ -1,8 +1,8 @@
-package org.crued.restcontract;
+package org.christor.restcontract;
 
 import java.io.IOException;
-import org.crued.restcontract.client.ContractClient;
-import org.crued.restcontract.server.ContractServer;
+import org.christor.restcontract.client.ContractClient;
+import org.christor.restcontract.server.ContractServer;
 
 public class App {
 

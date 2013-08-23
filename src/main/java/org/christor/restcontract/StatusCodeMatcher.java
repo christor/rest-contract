@@ -1,4 +1,4 @@
-package org.crued.restcontract;
+package org.christor.restcontract;
 
 public interface StatusCodeMatcher {
    boolean matches (int status);

@@ -1,4 +1,4 @@
-package org.crued.restcontract;
+package org.christor.restcontract;
 
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;

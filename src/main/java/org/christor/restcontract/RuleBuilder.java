@@ -1,4 +1,4 @@
-package org.crued.restcontract;
+package org.christor.restcontract;
 
 public class RuleBuilder {
     private Rule rule = new Rule();
