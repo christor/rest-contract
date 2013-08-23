@@ -7,23 +7,15 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
-import java.lang.ref.Reference;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.ws.rs.core.MultivaluedMap;
 import org.crued.restcontract.BodyMatcher;
-import org.crued.restcontract.RestContractViolationException;
 import org.crued.restcontract.Contract;
 import org.crued.restcontract.HeaderMatcher;
 import org.crued.restcontract.Request;
 import org.crued.restcontract.Response;
+import org.crued.restcontract.RestContractViolationException;
 import org.crued.restcontract.Rule;
 
 public class ContractClient {
