@@ -34,10 +34,6 @@ public class ContractClient {
         this.contract = contract;
     }
 
-    public void run() throws RestContractViolationException {
-        run(contract.getBaseUrl());
-    }
-
     public void run(String baseUrl) throws RestContractViolationException {
         for (Rule rule : contract.getRules()) {
             try {

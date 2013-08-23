@@ -9,11 +9,9 @@ import org.crued.restcontract.Response.ResponseBuilder;
 @Data
 public class Contract {
 
-    private String baseUrl;
-    List<Rule> rules = new ArrayList<Rule>();
+    List<Rule> rules = new ArrayList<>();
 
-    public Contract(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public Contract() {
     }
 
     public void addRule(final Rule rule) {
