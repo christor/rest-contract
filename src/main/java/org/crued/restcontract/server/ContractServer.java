@@ -4,14 +4,12 @@ import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.spi.container.ContainerRequest;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import org.crued.restcontract.Contract;
@@ -24,6 +22,7 @@ public class ContractServer {
 
     HttpServer server = null;
     private static final HashMap<String, Contract> contractMap = new HashMap<>();
+    private static final HashMap<Rule, Integer> ruleChainLocationMap = new HashMap<>();
 
     public void start(String baseUri, Contract contract) throws IOException {
         contractMap.put(baseUri, contract);
@@ -63,13 +62,20 @@ public class ContractServer {
         if (contract != null) {
             return handleRequest(contract, path, method, headers, body);
         } else {
-            System.err.println("Can't find contract for baseUri");
             return Response.serverError().build();
         }
     }
 
     private Response handleRequest(Contract contract, String path, String method, HttpHeaders headers, String body) {
         for (Rule rule : contract.getRules()) {
+            Rule headRule = rule;
+            if (rule.hasNext() && ruleChainLocationMap.containsKey(rule)) {
+                int index = ruleChainLocationMap.get(rule);
+                while (index-- > 0) {
+                    rule = rule.getNext();
+                }
+            }
+
             final org.crued.restcontract.Request targetRequest = rule.getRequest();
             if (targetRequest.getMethod().matches(method)) {
                 if (targetRequest.getPath().matches(path)) {
@@ -81,13 +87,21 @@ public class ContractServer {
                                 builder.header(m.getKey(), m.getValue());
                             }
                             builder.entity(response.getBody().getOutputText());
+                            if (rule.hasNext()) {
+                                int index = 0;
+                                if (ruleChainLocationMap.containsKey(headRule)) {
+                                    index = ruleChainLocationMap.get(headRule);
+                                }
+                                ruleChainLocationMap.put(rule, index + 1);
+                            } else {
+                                ruleChainLocationMap.remove(headRule);
+                            }
                             return builder.build();
                         }
                     }
                 }
             }
         }
-        System.err.println("No rule matching request: " + method + " " + path);
         return Response.serverError().entity("No rule matching request").build();
     }
 }

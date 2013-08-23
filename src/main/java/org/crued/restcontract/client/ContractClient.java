@@ -49,13 +49,12 @@ public class ContractClient {
     }
 
     public void runRule(Rule rule, String baseUrl) throws MalformedURLException, RestContractViolationException {
-        Client jerseyClient = Client.create();
+        final Client jerseyClient = Client.create();
         final ResponseHeaderCollectorClientFilter clientFilter = new ResponseHeaderCollectorClientFilter();
+        final Request request = rule.getRequest();
+        final String urlString = baseUrl + request.getPath().getTextValue();
+        final WebResource resource = jerseyClient.resource(urlString);
         jerseyClient.addFilter(clientFilter);
-        Request request = rule.getRequest();
-        String urlString = baseUrl + request.getPath().getTextValue();
-        System.err.println("url string: " + urlString);
-        WebResource resource = jerseyClient.resource(urlString);
         Builder builder = resource.getRequestBuilder();
         for (HeaderMatcher matcher : request.getHeaders()) {
             builder = resource.header(matcher.getKey(), matcher.getValue());
@@ -63,12 +62,12 @@ public class ContractClient {
         if (request.getBody() != null && request.getBody().getOutputText() != null) {
             builder.entity(request.getBody().getOutputText());
         }
-        String responseText = null;
         try {
-            responseText = builder.method(request.getMethod().getTextValue(), String.class);
+            builder.method(request.getMethod().getTextValue());
         } catch (UniformInterfaceException ex) {
-            // ignore for now, could be 404, etc.
+            // non-2xx response codes will cause us to land here
         }
+        final String responseText = clientFilter.getBody();
         final Response response = rule.getResponse();
         if (!response.getStatus().matches(clientFilter.getStatus())) {
             throw new RestContractViolationException("Error in rule: " + rule + " Unexpected HTTP Status Code. Expected: " + response.getStatus().getValue() + " but got " + clientFilter.getStatus());
@@ -89,6 +88,7 @@ public class ContractClient {
 
         private MultivaluedMap<String, String> responseHeaders;
         private int status;
+        private String body;
 
         public ResponseHeaderCollectorClientFilter() {
         }
@@ -98,6 +98,8 @@ public class ContractClient {
             ClientResponse response = getNext().handle(request);
             this.responseHeaders = response.getHeaders();
             this.status = response.getStatus();
+            response.bufferEntity();
+            this.body = response.getEntity(String.class);
             return response;
         }
 
@@ -107,6 +109,10 @@ public class ContractClient {
 
         public int getStatus() {
             return status;
+        }
+
+        public String getBody() {
+            return body;
         }
     }
 }
