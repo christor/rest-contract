@@ -5,6 +5,7 @@ An API for describing a REST contract via examples. This provides a client and a
 
 
 *Create a Contract*
+
         Contract contract = new Contract();
         contract.rule(Request.get("api/v1/"), Response.code(200).body("ThoughtStreams API").header("Content-Type", "text/plain"));
         contract.rule(Request.get("foo"), Response.code(200).body("bar").header("Content-Type", "text/plain"));
@@ -13,10 +14,14 @@ An API for describing a REST contract via examples. This provides a client and a
 
 
 *Create a Server that will follow the rules*
+
         new ContractServer().start("http://localhost:5555/", contract);
+
 _you can now test your RESTful client against this_
         
 *Create a Client and run the rules*        ContractClient client = new ContractClient(contract);
+
         client.run("http://localhost:5555/");
         Thread.sleep(1000000);
+
 _you can now test your RESTful service using this_
