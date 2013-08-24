@@ -73,7 +73,7 @@
     <scm>
         <url>https://github.com/christor/rest-contract</url>
         <connection>scm:git:ssh://github.com/christor/rest-contract</connection>
-        <developerConnection>scm:git:ssh://github.com/christor/rest-contract</developerConnection>
+        <developerConnection>scm:git:git@github.com:christor/rest-contract</developerConnection>
     </scm>
 
     <developers>
