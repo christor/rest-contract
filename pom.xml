@@ -61,7 +61,7 @@
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
-                        <phase>verify</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -83,8 +83,8 @@
         <url>https://github.com/christor/rest-contract</url>
         <connection>scm:git:ssh://github.com/christor/rest-contract</connection>
         <developerConnection>scm:git:git@github.com:christor/rest-contract</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>
