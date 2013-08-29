@@ -42,6 +42,5 @@ _you can now test your RESTful client against this_
 
         ContractClient client = new ContractClient(contract);
         client.run("http://localhost:5555/");
-        Thread.sleep(1000000);
         
 _you can now test your RESTful service using this_
