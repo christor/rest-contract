@@ -4,6 +4,7 @@
  */
 package org.christor.restcontract.client;
 
+import lombok.Cleanup;
 import org.christor.restcontract.Contract;
 import org.christor.restcontract.Request;
 import org.christor.restcontract.Response;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Alex
+ * @author Alex Beggs
  */
 public class ContractClientTest {
 
@@ -52,11 +53,11 @@ public class ContractClientTest {
                 .body("Go away or I will taunt you a second time")
                 .header("Content-Type", "text/html"));
 
+        @Cleanup("stop")
         ContractServer server = new ContractServer();
         server.start(baseUrl, contract);
         ContractClient client = new ContractClient(contract);
         client.run(baseUrl);
-        server.stop();
     }
 
     @Test
@@ -73,13 +74,13 @@ public class ContractClientTest {
                 Response.code(200).body("Client expects a different body... Kate Upton's maybe?")
                 .header("Content-Type", "text/plain"));
 
+        @Cleanup("stop")
         ContractServer server = new ContractServer();
         server.start(baseUrl, serverContract);
 
         ContractClient client = new ContractClient(clientContract);
         try {
             client.run(baseUrl);
-            server.stop();
             fail("Should have thrown a RestContractViolationException because the body didn't match");
         } catch (RestContractViolationException e) {
             // expected
