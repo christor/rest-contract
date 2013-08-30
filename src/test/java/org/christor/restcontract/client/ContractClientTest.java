@@ -7,6 +7,7 @@ package org.christor.restcontract.client;
 import org.christor.restcontract.Contract;
 import org.christor.restcontract.Request;
 import org.christor.restcontract.Response;
+import org.christor.restcontract.RestContractViolationException;
 import org.christor.restcontract.server.ContractServer;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -56,5 +57,32 @@ public class ContractClientTest {
         ContractClient client = new ContractClient(contract);
         client.run(baseUrl);
         server.stop();
+    }
+
+    @Test
+    public void testNonMatchingContractWithServerAndClient() throws Exception {
+
+        final String baseUrl = "http://localhost:5555/";
+        Contract serverContract = new Contract();
+        serverContract.rule(Request.get(baseUrl),
+                Response.code(200).body("ThoughtStreams API")
+                .header("Content-Type", "text/plain"));
+
+        Contract clientContract = new Contract();
+        clientContract.rule(Request.get(baseUrl),
+                Response.code(200).body("Client expects a different body... Kate Upton's maybe?")
+                .header("Content-Type", "text/plain"));
+
+        ContractServer server = new ContractServer();
+        server.start(baseUrl, serverContract);
+
+        ContractClient client = new ContractClient(clientContract);
+        try {
+            client.run(baseUrl);
+            server.stop();
+            fail("Should have thrown a RestContractViolationException because the body didn't match");
+        } catch (RestContractViolationException e) {
+            // expected
+        }
     }
 }
