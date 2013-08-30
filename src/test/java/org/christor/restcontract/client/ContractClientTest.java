@@ -62,7 +62,6 @@ public class ContractClientTest {
 
     @Test
     public void testNonMatchingContractWithServerAndClient() throws Exception {
-
         final String baseUrl = "http://localhost:5555/";
         Contract serverContract = new Contract();
         serverContract.rule(Request.get(baseUrl),
